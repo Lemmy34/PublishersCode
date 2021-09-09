@@ -61,6 +61,7 @@
     <Compile Include="ADMpublishersContext.cs" />
     <Compile Include="Dto\AuthorDto.cs" />
     <Compile Include="Dto\AuthorFile.cs" />
+    <Compile Include="Dto\CityDto.cs" />
     <Compile Include="MapperConfigurations\Mapping.cs" />
     <Compile Include="Migrations\202109082026106_InitialCreate.cs" />
     <Compile Include="Migrations\202109082026106_InitialCreate.designer.cs">

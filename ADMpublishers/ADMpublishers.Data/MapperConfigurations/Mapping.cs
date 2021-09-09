@@ -34,7 +34,10 @@ namespace ADMpublishers.Data.MapperConfigurations
                 .ForMember(des => des.state, opts => opts.MapFrom(source => source.city.state.name));
 
             CreateMap<AuthorDto, AuthorFile>();
-              
+
+            CreateMap<City, CityDto>()
+                  .ForMember(des => des.state, opts => opts.MapFrom(source => source.state.name)).ReverseMap();
+
 
 
         }

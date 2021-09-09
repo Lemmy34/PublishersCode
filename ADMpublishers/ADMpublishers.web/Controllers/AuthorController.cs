@@ -12,6 +12,11 @@ namespace ADMpublishers.web.Controllers
     public class AuthorController : Controller
     {
         // GET: Author
+
+        public AuthorController()
+        {
+
+        }
         public ActionResult Index()
         {
             IEnumerable<AuthorViewModel> authors = null;
@@ -45,7 +50,7 @@ namespace ADMpublishers.web.Controllers
         }
 
         // GET: Default/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             return View();
         }
@@ -73,14 +78,14 @@ namespace ADMpublishers.web.Controllers
         }
 
         // GET: Default/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             return View();
         }
 
         // POST: Default/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, FormCollection collection)
         {
             try
             {
@@ -95,14 +100,14 @@ namespace ADMpublishers.web.Controllers
         }
 
         // GET: Default/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             return View();
         }
 
         // POST: Default/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string id, FormCollection collection)
         {
             try
             {

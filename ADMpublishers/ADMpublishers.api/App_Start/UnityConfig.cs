@@ -13,6 +13,7 @@ namespace ADMpublishers.api
 
             // register all 
             container.RegisterType<IAuthorRepository, AuthorRepository>();
+            container.RegisterType<ICityReposity, CityReposity>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

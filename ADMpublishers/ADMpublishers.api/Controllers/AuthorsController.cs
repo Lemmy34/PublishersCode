@@ -29,7 +29,7 @@ namespace ADMpublishers.api.Controllers
         // GET: api/Authors
         public IEnumerable<AuthorDto> Get()
         {
-            return Mapping.Mapper.Map<List<AuthorDto>>(_repository.GetAll().ToList());
+            return Mapping.Mapper.Map<List<Author>,List<AuthorDto>>(_repository.GetAll().ToList());
         }
 
         // GET: api/Authors/5

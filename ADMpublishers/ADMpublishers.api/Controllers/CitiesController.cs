@@ -10,56 +10,66 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ADMpublishers.Data;
+using ADMpublishers.Data.Dto;
+using ADMpublishers.Data.MapperConfigurations;
 using ADMpublishers.Data.Models;
+using ADMpublishers.Data.Repositories;
 
 namespace ADMpublishers.api.Controllers
 {
     public class CitiesController : ApiController
     {
-        private ADMpublishersContext db = new ADMpublishersContext();
+        private ICityReposity _repository;
+
+        public CitiesController(ICityReposity repository)
+        {
+            _repository = repository;
+        }
 
         // GET: api/Cities
-        public IQueryable<City> Get()
+        public IEnumerable<CityDto> Get()
         {
-            return db.Cities;
+            return Mapping.Mapper.Map<List<City>,List<CityDto>>(_repository.GetAll().ToList());
         }
 
         // GET: api/Cities/5
-        [ResponseType(typeof(City))]
+        [ResponseType(typeof(CityDto))]
         public async Task<IHttpActionResult> Get(int id)
         {
-            City city = await db.Cities.FindAsync(id);
+            City city = await _repository.GetByID(id);
+
             if (city == null)
             {
                 return NotFound();
             }
-
-            return Ok(city);
+            var citydto = Mapping.Mapper.Map<City, CityDto>(city);
+            return Ok(citydto);
         }
 
         // PUT: api/Cities/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Put(int id, City city)
+        public async Task<IHttpActionResult> Put(int id, CityDto citydto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != city.Id)
+            if (id != citydto.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(city).State = EntityState.Modified;
+         
 
             try
             {
-                await db.SaveChangesAsync();
+                var city = Mapping.Mapper.Map<CityDto, City>(citydto);
+                await _repository.update(city);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CityExists(id))
+                if (!_repository.CityExists(id))
                 {
                     return NotFound();
                 }
@@ -74,43 +84,31 @@ namespace ADMpublishers.api.Controllers
 
         // POST: api/Cities
         [ResponseType(typeof(City))]
-        public async Task<IHttpActionResult> Post(City city)
+        public async Task<IHttpActionResult> Post(CityDto citydto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Cities.Add(city);
-            await db.SaveChangesAsync();
+            var city = Mapping.Mapper.Map<CityDto, City>(citydto);
+            await _repository.Add(city);
 
-            return CreatedAtRoute("DefaultApi", new { id = city.Id }, city);
+            return CreatedAtRoute("DefaultApi", new { id = city.Id }, citydto);
         }
 
         // DELETE: api/Cities/5
-        [ResponseType(typeof(City))]
+        [ResponseType(typeof(CityDto))]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            City city = await db.Cities.FindAsync(id);
-            if (city == null)
-            {
-                return NotFound();
-            }
+            City city = await _repository.remove(id);
 
-            db.Cities.Remove(city);
-            await db.SaveChangesAsync();
+            var citydto = Mapping.Mapper.Map<City, CityDto>(city);
 
-            return Ok(city);
+            return Ok(citydto);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+  
 
     }
 }
