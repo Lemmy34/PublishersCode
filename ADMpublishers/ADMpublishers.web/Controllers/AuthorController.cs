@@ -41,7 +41,22 @@ namespace ADMpublishers.web.Controllers
         // GET: Default/Details/5
         public ActionResult Details(string id)
         {
-            return View();
+            AuthorViewModel author = null;
+
+            var response = _authorservice.GetSingleAuthor(id);
+
+            if (!string.IsNullOrEmpty(response))
+            {
+                author = JsonConvert.DeserializeObject<AuthorViewModel>(response);
+
+            }
+            else
+            {
+
+                author = new AuthorViewModel();
+            }
+
+            return View(author);
         }
 
         // GET: Default/Create
@@ -69,7 +84,22 @@ namespace ADMpublishers.web.Controllers
         // GET: Default/Edit/5
         public ActionResult Edit(string id)
         {
-            return View();
+            AuthorViewModel author = null;
+
+            var response = _authorservice.GetSingleAuthor(id);
+
+            if (!string.IsNullOrEmpty(response))
+            {
+                author = JsonConvert.DeserializeObject<AuthorViewModel>(response);
+
+            }
+            else
+            {
+
+                author = new AuthorViewModel();
+            }
+
+            return View(author);
         }
 
         // POST: Default/Edit/5
@@ -91,7 +121,22 @@ namespace ADMpublishers.web.Controllers
         // GET: Default/Delete/5
         public ActionResult Delete(string id)
         {
-            return View();
+            AuthorViewModel author = null;
+
+            var response = _authorservice.GetSingleAuthor(id);
+
+            if (!string.IsNullOrEmpty(response))
+            {
+                author = JsonConvert.DeserializeObject<AuthorViewModel>(response);
+
+            }
+            else
+            {
+
+                author = new AuthorViewModel();
+            }
+
+            return View(author);
         }
 
         // POST: Default/Delete/5

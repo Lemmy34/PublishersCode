@@ -44,7 +44,7 @@ namespace ADMpublishers.Core.Services
             {
                 client.BaseAddress = new Uri("https://localhost:44391/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync($"Authors/id={id}");
+                var responseTask = client.GetAsync($"Authors/{id}");
                 responseTask.Wait();
 
                 var response = responseTask.Result;
