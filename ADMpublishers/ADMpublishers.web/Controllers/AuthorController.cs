@@ -1,4 +1,5 @@
-﻿using ADMpublishers.Data.ViewModels;
+﻿using ADMpublishers.Core.Services;
+using ADMpublishers.Data.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,40 +13,28 @@ namespace ADMpublishers.web.Controllers
     public class AuthorController : Controller
     {
         // GET: Author
-
-        public AuthorController()
+        private IAuthorService _authorservice;
+        public AuthorController(IAuthorService authorservice)
         {
-
+            _authorservice = authorservice;
         }
         public ActionResult Index()
         {
             IEnumerable<AuthorViewModel> authors = null;
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44391/api/");
-                //HTTP GET
-                var responseTask = client.GetAsync("Authors");
-                responseTask.Wait();
+            var response = _authorservice.GetAllAuthors();
 
-                var response = responseTask.Result;
-                if (response.IsSuccessStatusCode)
+                if (!string.IsNullOrEmpty(response))
                 {
-                    var dataTask =  response.Content.ReadAsStringAsync();
-
-                    dataTask.Wait();
-
-                     authors = JsonConvert.DeserializeObject<List<AuthorViewModel>>(dataTask.Result);
+                     authors = JsonConvert.DeserializeObject<List<AuthorViewModel>>(response);
 
                 }
                 else 
                 {
              
                     authors = Enumerable.Empty<AuthorViewModel>();
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
                 }
-            }
+            
             return View(authors);
         }
 
